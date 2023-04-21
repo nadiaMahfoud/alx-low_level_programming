@@ -8,24 +8,31 @@
  */
 int main(void)
 {
-	int digit1, digit2;
+	int i, j;
 
-	for (digit1 = 0; digit1 < 9; digit1++)
+	i = 48;
+	j = 48;
+
+	while (i < 58)
 	{
-		for (digit2 = digit1 + 1; digit2 < 10; digit2++)
+		j = i + 1;
+		while (j < 58)
 		{
-			putchar((digit1 % 10) + '0');
-			putchar((digit2 % 10) + '0');
+			putchar(i);
+			putchar(j);
 
-			if (digit1 == 8 && digit2 == 9)
-				continue;
-			
-			putchar(',');
-			putchar(' ');
+			if (i < 56 || j < 57)
+			{
+				putchar(44);
+				putchar(32);
+			}
+			j++;
 		}
+
+		i++;
 	}
 
-	putchar('\n');
+	putchar(10);
 
 	return (0);
 }

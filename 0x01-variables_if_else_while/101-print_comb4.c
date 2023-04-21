@@ -6,30 +6,41 @@
  *
  * Return: Always 0.
  */
+
 int main(void)
 {
-	int digit1, digit2, digit3;
+	int i, j, k;
 
-	for (digit1 = 0; digit1 < 8; digit1++)
+	i = 48;
+	j = 48;
+	k = 48;
+
+	while (i < 58)
 	{
-		for (digit2 = digit1 + 1; digit2 < 9; digit2++)
+		j = i + 1;
+		while (j < 58)
 		{
-			for (digit3 = digit2 + 1; digit3 < 10; digit3++)
+			k = j + 1;
+			while (k < 58)
 			{
-				putchar((digit1 % 10) + '0');
-				putchar((digit2 % 10) + '0');
-				putchar((digit3 % 10) + '0');
-
-				if (digit1 == 7 && digit2 == 8 && digit3 == 9)
-					continue;
-				
-				putchar(',');
-				putchar(' ');
+				putchar(i);
+				putchar(j);
+				putchar(k);
+				if (i < 55 || j < 56 || k < 57)
+				{
+					putchar(44);
+					putchar(32);
+				}
+				k++;
 			}
+
+			j++;
 		}
+
+		i++;
 	}
 
-	putchar('\n');
+	putchar(10);
 
 	return (0);
 }
