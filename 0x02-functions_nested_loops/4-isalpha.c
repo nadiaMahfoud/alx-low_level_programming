@@ -1,19 +1,13 @@
-#include "main.h"
+#include"main.h"
+
 /**
- * _isalpha - tests whether a character is from the English alphabet.
- * @c: character to be checked.
- * Return: 1 if the character is an English character.
- * 0 if the character is not an English character.
+ * _isalpha - function that check if alphabet
+ * @c: the int cheker
+ * Return: 1 if c is alpha and 0 if no
  */
 int _isalpha(int c)
 {
-	if (( c >= 97 && c <= 122) || ( c >= 65 && c <= 90))
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-	_putchar('\n');
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+                return (1);
+        return (0);
 }
