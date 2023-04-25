@@ -19,6 +19,7 @@ int main(void)
                 j = k;
                 printf("%lu, ", k);
         }
+	     }
         m = i % 1000;
         i = i / 1000;
         n = j % 1000;
@@ -43,3 +44,4 @@ int main(void)
         putchar('\n');
         return (0);
 }
+
