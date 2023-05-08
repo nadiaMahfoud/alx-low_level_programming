@@ -8,19 +8,27 @@
  * Return: Pointer to the beginning of the located substring, or NULL if
  *         the substring is not found.
  */
+
 char *_strstr(char *haystack, char *needle)
 {
-	int i, j;
+	int n;
 
-	for (i = 0; haystack[i] != '\0'; i++)
+	if (*needle == 0)
+		return (haystack);
+
+	while (*haystack)
 	{
-		for (j = 0; needle[j] != '\0'; j++)
+		n = 0;
+
+		if (haystack[n] == needle[n])
 		{
-			if (needle[j] != haystack[i + j])
-				break;
+			do {
+				if (needle[n + 1] == '\0')
+					return (haystack);
+				n++;
+			} while (haystack[n] == needle[n]);
 		}
-		if (needle[j] == '\0')
-			return (haystack + i);
+		haystack++;
 	}
-	return (NULL);
+	return ('\0');
 }
