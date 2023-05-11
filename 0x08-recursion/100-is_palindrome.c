@@ -1,34 +1,35 @@
 #include "main.h"
 
 /**
- * _strlen_recursion - Returns the length of a string
- * @s: Pointer to the string to be measured
+ * palindrome2 - obtains length of a
+ * @a: string
+ * @len: integer to count length
  *
- * Return: Length of the string
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-int _strlen_recursion(char *s)
+int palindrome2(char *a, int len)
 {
-	if (*s == '\0')
-		return (0);
-
-	return (_strlen_recursion(s + 1) + 1);
+	if (*a == 0)
+		return (len - 1);
+	return (palindrome2(a + 1, len + 1));
 }
 /**
- * comparator - compares string vs string reverse
+ * palindrome3 - compares string vs string reverse
  * @a: string
- * @l: length
+ * @len: length
  *
  * Return: On success 1.
  * On error, -1 is returned, and errno is set appropriately.
  */
 
-int comparator(char *a, int l)
+int palindrome3(char *a, int len)
 {
-	if (*a != *(a + l))
+	if (*a != *(a + len))
 		return (0);
 	else if (*a == 0)
 		return (1);
-	return (comparator(a + 1, l - 2));
+	return (palindrome3(a + 1, len - 2));
 }
 /**
  * is_palindrome - checks if a string is a palindrome
@@ -39,7 +40,8 @@ int comparator(char *a, int l)
  */
 int is_palindrome(char *s)
 {
-	if (*s == '\0')
-		return (1);
-	return (comparator(s, 0, _strlen_recursion(s) - 1));
+	int len;
+
+	len = palindrome2(s, 0);
+	return (palindrome3(s, len));
 }
