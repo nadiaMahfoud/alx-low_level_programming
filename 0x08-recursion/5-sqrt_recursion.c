@@ -13,7 +13,7 @@ int sqrt_helper(int i, int j)
 		return (j);
 	else if (j * j > i)
 		return (-1);
-	return (sqrsqrt_helpert2(i, j + 1));
+	return (sqrt_helper(i, j + 1));
 }
 /**
  * _sqrt_recursion - returns the natural square root of n
