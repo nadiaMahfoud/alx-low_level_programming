@@ -1,96 +1,114 @@
+#include "main.h"
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 
 /**
- * validate_input - Validates if the given number is composed of digits.
- * @num: The number to validate
+ * _strlen - returns the length of a string
+ * @s: the string whose length to check
  *
- * Return: 0 if the number is valid, 1 otherwise
+ * Return: integer length of string
  */
-int validate_input(char *num)
+int _strlen(char *s)
 {
-	int i;
+	int i = 0;
 
-	for (i = 0; num[i] != '\0'; i++)
-	{
-		if (num[i] < '0' || num[i] > '9')
-		{
-			printf("Error\n");
-			return (1);
-		}
-	}
-
-	return (0);
-}
-
-/**
- * multiply_numbers - Multiplies two numbers and prints the result.
- * @num1: The first number
- * @num2: The second number
- */
-void multiply_numbers(char *num1, char *num2)
-{
-	int len1, len2, len, i, j;
-	int *result;
-
-	len1 = 0;
-	while (num1[len1] != '\0')
-		len1++;
-
-	len2 = 0;
-	while (num2[len2] != '\0')
-		len2++;
-
-	len = len1 + len2;
-	result = calloc(len, sizeof(int));
-	if (result == NULL)
-	{
-		printf("Error\n");
-		return;
-	}
-
-	for (i = len1 - 1; i >= 0; i--)
-	{
-		for (j = len2 - 1; j >= 0; j--)
-		{
-			int mul = (num1[i] - '0') * (num2[j] - '0');
-			int sum = result[i + j + 1] + mul;
-
-			result[i + j] += sum / 10;
-			result[i + j + 1] = sum % 10;
-		}
-	}
-
-	i = 0;
-	while (result[i] == 0)
+	while (*s++)
 		i++;
-
-	for (; i < len; i++)
-		printf("%d", result[i]);
-	printf("\n");
-
-	free(result);
+	return (i);
 }
 
 /**
- * main - Entry point
- * @argc: Argument count
- * @argv: Argument vector
+ * _isdigit - checks if character is digit
+ * @c: the character to check
  *
- * Return: 0 on success, 1 on error
+ * Return: 1 if digit, 0 otherwise
+ */
+int _isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+/**
+ * _multiply - multiply two big number strings
+ * @s1: the first big number string
+ * @s2: the second big number string
+ *
+ * Return: the product big number string
+ */
+char *_multiply(char *s1, char *s2)
+{
+	char *r;
+	int l1, l2, a, b, c, x;
+
+	l1 = _strlen(s1);
+	l2 = _strlen(s2);
+	r = malloc(a = x = l1 + l2);
+	if (!r)
+		printf("Error\n"), exit(98);
+	while (a--)
+		r[a] = 0;
+
+	for (l1--; l1 >= 0; l1--)
+	{
+		if (!_isdigit(s1[l1]))
+		{
+			free(r);
+			printf("Error\n"), exit(98);
+		}
+		a = s1[l1] - '0';
+		c = 0;
+
+		for (l2 = _strlen(s2) - 1; l2 >= 0; l2--)
+		{
+			if (!_isdigit(s2[l2]))
+			{
+				free(r);
+				printf("Error\n"), exit(98);
+			}
+			b = s2[l2] - '0';
+
+			c += r[l1 + l2 + 1] + (a * b);
+			r[l1 + l2 + 1] = c % 10;
+
+			c /= 10;
+		}
+		if (c)
+			r[l1 + l2 + 1] += c;
+	}
+	return (r);
+}
+
+
+/**
+ * main - multiply two big number strings
+ * @argc: the number of arguments
+ * @argv: the argument vector
+ *
+ * Return: Always 0 on success.
  */
 int main(int argc, char **argv)
 {
+	char *r;
+	int z, y, x;
+
 	if (argc != 3)
+		printf("Error\n"), exit(98);
+
+	x = _strlen(argv[1]) + _strlen(argv[2]);
+	r = _multiply(argv[1], argv[2]);
+	y = 0;
+	z = 0;
+	while (y < x)
 	{
-		printf("Error\n");
-		return (1);
+		if (r[y])
+			z = 1;
+		if (z)
+			_putchar(r[y] + '0');
+		y++;
 	}
-
-	if (validate_input(argv[1]) || validate_input(argv[2]))
-		return (1);
-
-	multiply_numbers(argv[1], argv[2]);
-
+	if (!z)
+		_putchar('0');
+	_putchar('\n');
+	free(r);
 	return (0);
 }
