@@ -1,95 +1,51 @@
 #include "variadic_functions.h"
 
 /**
- * print_char - Prints a character.
- * @args: The argument list.
- */
-void print_char(va_list args)
-{
-	char c = va_arg(args, int);
-
-	printf("%c", c);
-}
-
-/**
- * print_integer - Prints an integer.
- * @args: The argument list.
- */
-void print_integer(va_list args)
-{
-	int i = va_arg(args, int);
-
-	printf("%d", i);
-}
-
-/**
- * print_float - Prints a float.
- * @args: The argument list.
- */
-void print_float(va_list args)
-{
-	double d = va_arg(args, double);
-
-	printf("%f", d);
-}
-
-/**
- * print_string - Prints a string.
- * @args: The argument list.
- */
-void print_string(va_list args)
-{
-	char *str = va_arg(args, char *);
-
-	if (str)
-		printf("%s", str);
-	else
-		printf("(nil)");
-}
-
-/**
  * print_all - Prints anything.
- * @format: The format of the arguments passed to the function.
+ * @format: A list of types of arguments passed to the function.
+ *
+ * Return: No return.
  */
 void print_all(const char * const format, ...)
 {
 	va_list args;
-	unsigned int i = 0;
-	const char *sep = "";
-	void (*print_func)(va_list);
+	unsigned int i = 0, j, c = 0;
+	char *str;
+	const char t_arg[] = "cifs";
 
 	va_start(args, format);
-
 	while (format && format[i])
 	{
-		print_func = NULL;
-
+		j = 0;
+		while (t_arg[j])
+		{
+			if (format[i] == t_arg[j] && c)
+			{
+				printf(", ");
+				break;
+			} j++;
+		}
 		switch (format[i])
 		{
 		case 'c':
-			print_func = print_char;
+			printf("%c", va_arg(args, int)), c = 1;
 			break;
 		case 'i':
-			print_func = print_integer;
+			printf("%d", va_arg(args, int)), c = 1;
 			break;
 		case 'f':
-			print_func = print_float;
+			printf("%f", va_arg(args, double)), c = 1;
 			break;
 		case 's':
-			print_func = print_string;
+			str = va_arg(args, char *), c = 1;
+			if (!str)
+			{
+				printf("(nil)");
+				break;
+			}
+			printf("%s", str);
 			break;
-		default:
-			i++;
-			continue;
-		}
-
-		printf("%s", sep);
-		print_func(args);
-		sep = ", ";
-		i++;
+		} i++;
 	}
-
-	va_end(args);
-
-	printf("\n");
+	printf("\n"), va_end(args);
 }
