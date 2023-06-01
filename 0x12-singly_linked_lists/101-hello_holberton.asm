@@ -1,27 +1,26 @@
 section .data
-    message db 'Hello, Holberton', 0
+    hello db "Hello, Holberton\n", 0
+    format db "%s", 0
 
 section .text
-    extern printf
     global main
+    extern printf
 
-    ; Entry point of the program
 main:
-    ; Save the base pointer
     push rbp
     mov rbp, rsp
 
-    ; Push the address of the format string onto the stack
-    mov rdi, message
-    xor eax, eax
+    sub rsp, 8 ; Allocate space for two 64-bit arguments on the stack
 
-    ; Call printf
-    call printf
+    mov rdi, format ; Set the format string
+    mov rsi, hello ; Set the address of the hello string
 
-    ; Clean up the stack
-    mov rsp, rbp
-    pop rbp
+    xor eax, eax ; Clear the EAX register
+    call printf ; Call the printf function
 
-    ; Exit the program
-    xor eax, eax
+    add rsp, 8 ; Restore the stack pointer
+
+    mov eax, 0 ; Set the return value to 0
+    leave
     ret
+
