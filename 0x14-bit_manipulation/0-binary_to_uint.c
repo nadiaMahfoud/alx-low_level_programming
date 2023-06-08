@@ -9,7 +9,7 @@
  */
 unsigned int binary_to_uint(const char *b)
 {
-	unsigned int x, power;
+	unsigned int n, pow;
 	int i;
 
 	if (b == NULL)
@@ -21,11 +21,11 @@ unsigned int binary_to_uint(const char *b)
 			return (0);
 	}
 
-	for (power = 1, x = 0, i--; i >= 0; i--, power *= 2)
+	for (pow = 1, n = 0, i--; i >= 0; i--, pow *= 2)
 	{
 		if (b[i] == '1')
-			x += power;
+			n += pow;
 	}
 
-	return (x);
+	return (n);
 }
