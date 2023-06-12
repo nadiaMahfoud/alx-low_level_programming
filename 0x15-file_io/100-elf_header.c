@@ -21,18 +21,15 @@ void close_elf(int fd);
  * check_elf - Checks if it is an ELF file.
  * @ident: A pointer to an array containing the ELF magic numbers.
  *
- * Description: If the file is not an ELF file, exit with code 98.
+ * Description: If the file is not an ELF file - exit code 98.
  */
 void check_elf(unsigned char *ident)
 {
 	int i;
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < EI_MAG3 + 1; i++)
 	{
-		if (ident[i] != 127 &&
-		    ident[i] != 'E' &&
-		    ident[i] != 'L' &&
-		    ident[i] != 'F')
+		if (ident[i] != ELFMAG[i])
 		{
 			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
 			exit(98);
@@ -64,7 +61,7 @@ void print_magic(unsigned char *ident)
 }
 
 /**
- * print_class - Prints the class of the ELF file.
+ * print_class - Print the class of the ELF file.
  * @class: The class value from the identification bytes.
  */
 void print_class(unsigned char class)
@@ -85,7 +82,7 @@ void print_class(unsigned char class)
 }
 
 /**
- * print_data - Prints the data encoding of the ELF file.
+ * print_data - Print the data encoding of the ELF file.
  * @data: The data encoding value from the identification bytes.
  */
 void print_data(unsigned char data)
@@ -106,7 +103,7 @@ void print_data(unsigned char data)
 }
 
 /**
- * print_version - Prints the version of the ELF file.
+ * print_version - Print the version of the ELF file.
  * @version: The version value from the identification bytes.
  */
 void print_version(unsigned char version)
@@ -115,7 +112,7 @@ void print_version(unsigned char version)
 }
 
 /**
- * print_osabi - Prints the OS/ABI of the ELF file.
+ * print_osabi - Print the OS/ABI of the ELF file.
  * @osabi: The OS/ABI value from the identification bytes.
  */
 void print_osabi(unsigned char osabi)
@@ -170,7 +167,7 @@ void print_abi(unsigned char *ident)
 }
 
 /**
- * print_elf_type - Prints the type of the ELF file.
+ * print_elf_type - Print the type of the ELF file.
  * @type: The type value from the ELF header.
  */
 void print_elf_type(Elf64_Half type)
@@ -200,7 +197,7 @@ void print_elf_type(Elf64_Half type)
 }
 
 /**
- * print_entry_point - Prints the entry point address of the ELF file.
+ * print_entry_point - Print the entry point address of the ELF file.
  * @entry: The entry point value from the ELF header.
  */
 void print_entry_point(Elf64_Addr entry)
@@ -212,7 +209,7 @@ void print_entry_point(Elf64_Addr entry)
  * close_elf - Closes an ELF file.
  * @fd: The file descriptor of the ELF file.
  *
- * Description: If the file cannot be closed, exit with code 98.
+ * Description: If the file cannot be closed - exit code 98.
  */
 void close_elf(int fd)
 {
@@ -225,20 +222,26 @@ void close_elf(int fd)
 }
 
 /**
- * main - Displays the information contained in the ELF header
- *        at the start of an ELF file.
+ * main - Displays the information contained in the
+ *        ELF header at the start of an ELF file.
  * @argc: The number of command-line arguments.
  * @argv: An array of command-line argument strings.
  *
  * Return: 0 on success, or the appropriate exit code on failure.
- *
- * Description: If the file is not an ELF File or the function fails,
- *              exit with code 98.
+ * 
+ * Description: If the file is not an ELF File or
+ *              the function fails - exit code 98.
  */
 int main(int __attribute__((__unused__)) argc, char *argv[])
 {
 	Elf64_Ehdr *header;
-	int fd, ret;
+	int fd, r;
+
+	if (argc != 2)
+	{
+		dprintf(STDERR_FILENO, "Usage: %s <ELF-file>\n", argv[0]);
+		exit(98);
+	}
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
@@ -246,6 +249,7 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
+
 	header = malloc(sizeof(Elf64_Ehdr));
 	if (header == NULL)
 	{
@@ -253,8 +257,9 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
-	ret = read(fd, header, sizeof(Elf64_Ehdr));
-	if (ret == -1)
+
+	r = read(fd, header, sizeof(Elf64_Ehdr));
+	if (r == -1)
 	{
 		free(header);
 		close_elf(fd);
@@ -275,5 +280,5 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 
 	free(header);
 	close_elf(fd);
-	return (0);
+	return 0;
 }
